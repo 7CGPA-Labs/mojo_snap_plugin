@@ -433,21 +433,20 @@ async function loadROM(game) {
                 return this.EmscriptenReceiveCommandReply ? this.EmscriptenReceiveCommandReply() : null;
             },
             retroArchExit: function(core, content) {
-                console.log("[RetroArch] Core exit callback invoked.");
                 ApplicationState.exitGameplay();
             },
             onRuntimeInitialized: function() {
-                console.log("🚀 [RetroArch] Core engine is ready!");
+                // runtime ready
             },
             print: function(text) {
-                console.log("[RetroArch Core stdout]", text);
+                // suppress RetroArch stdout logs for performance
             },
             printErr: function(text) {
-                console.log("[RetroArch Core stderr]", text);
+                // suppress RetroArch stderr logs for performance
             },
             canvas: canvas,
             parent: canvas.parentNode,
-            arguments: ["-v", romPath, "-c", "/home/web_user/retroarch/userdata/retroarch.cfg"],
+            arguments: [romPath, "-c", "/home/web_user/retroarch/userdata/retroarch.cfg"],
             corePath: `/home/web_user/retroarch/cores/${core}_libretro.core`,
             preRun: [function(mod) {
                 mod.ENV["LIBRARY_PATH"] = `/home/web_user/retroarch/cores/${core}_libretro.core`;
