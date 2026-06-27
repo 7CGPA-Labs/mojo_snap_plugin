@@ -33,8 +33,11 @@ export function initializeWebSocket(server) {
         console.log(`⚡ [WEBSOCKET] New client connection established.`);
 
         socket.on('message', async (message) => {
-            // High-Speed Binary Controller Stream Parser
-            if (message instanceof Buffer || Buffer.isBuffer(message) || message instanceof ArrayBuffer) {
+            // Check if the message is a 2-byte raw binary array buffer/Buffer from a controller
+            const isBinary = (message instanceof ArrayBuffer && message.byteLength === 2) ||
+                             (Buffer.isBuffer(message) && message.length === 2);
+
+            if (isBinary) {
                 // If a binary packet is received but playerIndex is not yet assigned, dynamically assign slots
                 if (!socket.playerIndex) {
                     if (!p1Socket) {
@@ -57,21 +60,20 @@ export function initializeWebSocket(server) {
                 // If this is P1 or P2, prepend the playerIndex to create a 3-byte frame
                 if (socket.playerIndex > 0 && tvSocket && tvSocket.readyState === 1) {
                     const view = new Uint8Array(message);
-                    if (view.length === 2) {
-                        const unifiedFrame = new Uint8Array(3);
-                        unifiedFrame[0] = socket.playerIndex;
-                        unifiedFrame[1] = view[0]; // actionPhase (1=down, 2=up)
-                        unifiedFrame[2] = view[1]; // buttonIntegerCode (1-12)
-                        
-                        tvSocket.send(unifiedFrame);
-                    }
+                    const unifiedFrame = new Uint8Array(3);
+                    unifiedFrame[0] = socket.playerIndex;
+                    unifiedFrame[1] = view[0]; // actionPhase (1=down, 2=up)
+                    unifiedFrame[2] = view[1]; // buttonIntegerCode (1-12)
+                    
+                    tvSocket.send(unifiedFrame);
                 }
                 return;
             }
 
-            // Fallback JSON message parsing (primarily for TV registration and status queries)
+            // Otherwise, it's a JSON text frame (e.g. TV registration or configuration change)
             try {
-                const data = JSON.parse(message);
+                const textContent = message.toString('utf-8');
+                const data = JSON.parse(textContent);
 
                 if (data.type === 'REGISTER_TV') {
                     console.log(`📺 [WEBSOCKET] TV Display registered.`);
