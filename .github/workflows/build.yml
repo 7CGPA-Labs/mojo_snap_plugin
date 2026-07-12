@@ -1,0 +1,57 @@
+name: Build targets
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-extension:
+    name: Package WebExtension
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Assemble Extension Assets
+        run: |
+          mkdir -p dist/extension
+          cp -r extension/* dist/extension/
+          mkdir -p dist/extension/shared
+          cp -r shared/* dist/extension/shared/
+
+      - name: Zip WebExtension Package
+        run: |
+          cd dist/extension
+          zip -r ../extension.zip .
+
+      - name: Upload Extension Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: extension
+          path: dist/extension.zip
+
+  build-plugin:
+    name: Compile Media Server Plugin
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore media-plugin/plugin.csproj
+
+      - name: Build plugin assembly
+        run: dotnet build media-plugin/plugin.csproj -c Release -o dist/media-plugin
+
+      - name: Upload Plugin Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: media-plugin-dll
+          path: dist/media-plugin/RetroConsolePlugin.dll
