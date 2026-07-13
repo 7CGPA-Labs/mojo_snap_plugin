@@ -22,9 +22,9 @@
             <div id="file-drop-zone">
                 <div class="glow-icon">💿</div>
                 <div class="drop-title">DRAG & DROP ROM FILE</div>
-                <div class="drop-sub">Supports NES, SNES, SEGA, GB, GBC, and GBA formats</div>
+                <div class="drop-sub">Supports NES, SNES, SEGA, GB, GBC, GBA, and WOLF3D formats</div>
                 <div style="margin: 15px 0; color: #555; font-size: 10px;">- OR -</div>
-                <input type="file" id="rom-select" style="display:none;" accept=".nes,.sfc,.smc,.bin,.md,.sms,.gg,.gb,.gbc,.gba">
+                <input type="file" id="rom-select" style="display:none;" accept=".nes,.sfc,.smc,.bin,.md,.sms,.gg,.gb,.gbc,.gba,.pk3,.zip">
                 <label for="rom-select" class="btn-select">[SELECT ROM]</label>
             </div>
         </div>
@@ -147,6 +147,7 @@
             });
 
             function bootLocalRom(file) {
+                const nameLower = file.name.toLowerCase();
                 const ext = file.name.split('.').pop().toLowerCase();
                 let consoleType = 'NES';
                 if (ext === 'sfc' || ext === 'smc') {
@@ -159,6 +160,8 @@
                     consoleType = 'GBC';
                 } else if (ext === 'gba') {
                     consoleType = 'GBA';
+                } else if (ext === 'pk3' || nameLower.includes('wolf3d') || nameLower.includes('wolfenstein') || nameLower.includes('spear of destiny')) {
+                    consoleType = 'ECWOLF';
                 }
 
                 const objectUrl = URL.createObjectURL(file);

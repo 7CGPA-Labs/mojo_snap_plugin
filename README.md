@@ -15,7 +15,7 @@ webos-retro-console/
 ├── build_extension.ps1    <-- Packages browser WebExtension
 ├── build_plugin.ps1       <-- Compiles Emby/Jellyfin C# plugin assembly
 ├── shared/                <-- Common client gaming engine & WASM cores
-│   ├── cores/             <-- WASM retro cores (fceumm, snes9x2010, genesis_plus_gx, gambatte, mgba)
+│   ├── cores/             <-- WASM retro cores (fceumm, snes9x2010, genesis_plus_gx, gambatte, mgba, ecwolf)
 │   ├── gameplay.js        <-- Core emulator logic wrapper
 │   └── logo96.png         <-- Master icon/logo asset
 │
@@ -60,6 +60,7 @@ The compiled DLL assembly will output to `dist/media-plugin/`. Copy `RetroConsol
 - **Sega Genesis / Master System / Game Gear**: genesis_plus_gx (`.md`, `.sms`, `.gg`, `.bin`)
 - **Game Boy / Game Boy Color**: gambatte (`.gb`, `.gbc`)
 - **Game Boy Advance**: mgba (`.gba`)
+- **Wolfenstein 3D**: ecwolf (`.pk3`, `.zip`)
 
 ---
 
@@ -67,4 +68,7 @@ The compiled DLL assembly will output to `dist/media-plugin/`. Copy `RetroConsol
 
 ### 1. Network Service Discovery - mDNS
 Connecting players via Virtual Gamepad Controller Android/iOS application (only for Emby/Jellyfin plugin C# backend).
+
+### 2. Emulation Additions
+- Addition of `dosbox_pure` from nightly build.
 

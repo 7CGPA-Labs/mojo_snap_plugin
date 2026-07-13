@@ -656,7 +656,9 @@ async function loadROM(game) {
             'SEGA': 'genesis_plus_gx',
             'GB': 'gambatte',
             'GBC': 'gambatte',
-            'GBA': 'mgba'
+            'GBA': 'mgba',
+            'WOLF3D': 'ecwolf',
+            'ECWOLF': 'ecwolf'
         };
         const core = coreMap[game.console.toUpperCase()] || 'fceumm';
         window.currentCore = core;
