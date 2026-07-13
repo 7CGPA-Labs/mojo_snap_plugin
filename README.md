@@ -2,10 +2,9 @@
 
 A high-performance, serverless, and cross-platform retro game emulation platform. The system runs standard RetroArch WebAssembly cores rendering directly onto a WebGL canvas with support for local USB/Bluetooth gamepads.
 
-This project is organized as a **monorepo** supporting three distribution targets from a single client codebase:
+This project is organized as a **monorepo** supporting two distribution targets from a single client codebase:
 1. **Cross-Browser WebExtension** (Chrome, Edge, Firefox using Manifest V3).
 2. **Media Server Plugin** (Emby and Jellyfin C# .NET plugins).
-3. **Static Web App** (GitHub Pages).
 
 ---
 
@@ -30,7 +29,7 @@ webos-retro-console/
 │   └── Web/
 │       └── play.html      <-- Client player view displaying only WebGL canvas
 │
-└── docs/                  <-- Target 3: Static GitHub Pages deployment
+└── docs/
 ```
 
 ---
@@ -53,8 +52,13 @@ The compiled DLL assembly will output to `dist/media-plugin/`. Copy `RetroConsol
 
 ---
 
-## 🌐 Static Web App (GitHub Pages)
+## Future Development
 
-You can play ROMs directly in your browser without installing any files. Access the live static console page hosted on **GitHub Pages** (configured to serve from the `/docs` directory).
-- **ROM Loading**: Click the `SELECT ROM` button or drag-and-drop a `.nes`, `.sfc`, or `.bin` file directly onto the screen.
-- **Save States & Key Remapping**: All configs, controller binds, and game saves are persisted locally inside the browser's IndexedDB storage.
+### 1. Network Service Discovery - mDNS
+Connecting players via Virtual Gamepad Controller Android/iOS application (only for Emby/Jellyfin plugin C# backend).
+
+### 2. Adding few more cores
+a. Replace `picodrive` with `genesis_plus_gx`, restricting only for `.md`, `.sms`, `.gg`.
+
+b. Add few more cores such as `gambette`, `mgba`, and `dosbox_pure` (games till 1994 will be supported).
+
