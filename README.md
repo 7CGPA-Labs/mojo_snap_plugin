@@ -70,38 +70,44 @@ Because of Jellyfin 10.9+ security architecture, this C# plugin cannot automatic
 ```javascript
 let injectedForId = null;
 
-const observer = new MutationObserver(() => {
-    const hash = window.location.hash;
-    if (!hash.includes('details')) {
-        injectedForId = null; // Reset when leaving the details page
+```javascript
+let injectedForId = null;
+
+function checkAndInject() {
+    const url = window.location.href;
+    
+    // Check if we are on a details page
+    if (!url.includes('details?id=')) {
+        injectedForId = null; 
         return;
     }
     
-    const urlParams = new URLSearchParams(hash.substring(hash.indexOf('?')));
-    const id = urlParams.get('id');
-    if (!id || injectedForId === id) return;
+    // Extract ID safely
+    const idMatch = url.match(/id=([a-zA-Z0-9]+)/);
+    if (!idMatch) return;
+    const id = idMatch[1];
+    
+    if (injectedForId === id) return;
 
-    // Find the standard Play button (handles both old and React UI)
-    const playBtn = document.querySelector('button[title="Play"], button[aria-label="Play"], button[data-action="resume"], .btnPlay');
+    // Look for any primary action buttons in the Jellyfin UI
+    const playBtn = document.querySelector('button[title="Play"], button[aria-label="Play"], button[data-action="resume"], .btnPlay, button[data-action="play"]');
     
     if (playBtn) {
         const buttonsContainer = playBtn.parentElement;
         
         if (!buttonsContainer.querySelector('.btnMojoPlay')) {
-            injectedForId = id; // Prevent infinite loops
+            injectedForId = id; 
             
-            // Use Jellyfin's global ApiClient to fetch metadata
             var apiClient = window.ApiClient; 
             if(apiClient) {
                 apiClient.getItem(apiClient.getCurrentUserId(), id).then(item => {
-                    // Check if it is a ROM based on the Path or Container extension
+                    
                     if (item && ((item.Path && item.Path.match(/\.(nes|sfc|smc|md|gba|gb|gbc|sms|gg|bin)$/i)) || 
                                  (item.Container && item.Container.match(/(nes|sfc|smc|md|gba|gb|gbc|sms|gg|bin)/i)))) {
                         
                         var mojoBtn = document.createElement('button');
                         mojoBtn.className = playBtn.className + ' btnMojoPlay';
                         
-                        // Style it to stand out!
                         mojoBtn.style.backgroundColor = '#52B54B';
                         mojoBtn.style.color = '#fff';
                         mojoBtn.style.marginLeft = '10px';
@@ -118,16 +124,22 @@ const observer = new MutationObserver(() => {
                             window.location.href = '/web/index.html#!/mojosnapplay.html?id=' + id;
                         };
                         
-                        // Add it right next to the standard Play button
                         buttonsContainer.appendChild(mojoBtn);
                     }
                 }).catch(err => console.log("[MojoSnap] Error fetching item:", err));
             }
         }
     }
-});
+}
 
-// Observe the entire body for DOM changes, which is required for React SPAs
+// Run immediately in case the page is already fully loaded (like after an F5 refresh)
+setTimeout(checkAndInject, 500);
+setTimeout(checkAndInject, 1500);
+
+// Also run whenever the page changes dynamically (React navigation)
+const observer = new MutationObserver(() => {
+    checkAndInject();
+});
 observer.observe(document.body, { childList: true, subtree: true });
 ```
 
