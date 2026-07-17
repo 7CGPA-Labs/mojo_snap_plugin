@@ -102,8 +102,8 @@ function checkAndInject() {
             if(apiClient) {
                 apiClient.getItem(apiClient.getCurrentUserId(), id).then(item => {
                     
-                    if (item && ((item.Path && item.Path.match(/\.(nes|sfc|smc|md|gba|gb|gbc|sms|gg|bin)$/i)) || 
-                                 (item.Container && item.Container.match(/(nes|sfc|smc|md|gba|gb|gbc|sms|gg|bin)/i)))) {
+                    if (item && ((item.Path && item.Path.match(/\.(nes|sfc|smc|md|gba|gb|gbc|sms|gg|bin|zip|pk3|img|cue|iso)$/i)) || 
+                                 (item.Container && item.Container.match(/(nes|sfc|smc|md|gba|gb|gbc|sms|gg|bin|zip|pk3|img|cue|iso)/i)))) {
                         
                         var mojoBtn = document.createElement('button');
                         mojoBtn.className = playBtn.className + ' btnMojoPlay';
