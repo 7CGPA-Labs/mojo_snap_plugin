@@ -39,7 +39,7 @@ jobs:
         run: choco install innosetup -y --no-progress
 
       - name: Build Setup Executable
-        run: '"C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer.iss'
+        run: '& "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer.iss'
 
       - name: Upload Releases
         uses: actions/upload-artifact@v4
