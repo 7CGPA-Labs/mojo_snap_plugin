@@ -100,11 +100,11 @@ function toggleMenuOverlay() {
     }
 }
 
-// Global shortcut for Select + Start (Shift + Enter)
+// Global shortcut for Menu button (Escape)
 const activeKeys = new Set();
 window.addEventListener('keydown', (e) => {
     activeKeys.add(e.key);
-    if ((activeKeys.has('Shift') && activeKeys.has('Enter')) || e.key === 'Escape') {
+    if (e.key === 'Escape') {
         // Prevent default browser behavior if needed
         toggleMenuOverlay();
     }
