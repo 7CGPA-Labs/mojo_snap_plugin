@@ -4,9 +4,6 @@ using MediaBrowser.Common.Plugins;
 using MediaBrowser.Common.Configuration;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Serialization;
-using MediaBrowser.Model.Drawing;
-using System.IO;
-
 namespace MojoSnapPlugin
 {
     public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
