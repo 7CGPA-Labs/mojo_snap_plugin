@@ -3,7 +3,7 @@ name: Build Mojo Snap Plugin
 on:
   workflow_dispatch:
   push:
-    branches: [ "main", "feature/overlay-menu" ]
+    branches: [ "main", "feature/mdns-virtual-controller-ecosystem" ]
     paths:
       - "src/**"
       - "shared/**"
