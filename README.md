@@ -163,10 +163,10 @@ observer.observe(document.body, { childList: true, subtree: true });
 
 ---
 
-## Future Development
+## Feature Roadmap
 
 ### 1. Network Service Discovery — mDNS
-Connecting players via Virtual Gamepad Controller Android/iOS application using mDNS service broadcasting and low-latency binary WebSocket protocol.
+Connecting players via Virtual Gamepad Controller Android/iOS application using mDNS service broadcasting and low-latency binary protocol with a dual TCP/UDP architecture (UDP for ultra-fast local LAN inputs, TCP WebSocket for WAN fallback).
 
 ### 2. Settings & Configurations
 - Video/Audio/Hardware settings with core/game specific overrides.

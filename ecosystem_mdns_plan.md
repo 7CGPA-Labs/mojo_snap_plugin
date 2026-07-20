@@ -37,9 +37,9 @@ To ensure the mobile app can discover *any* of the ecosystem hosts (Mobile, Desk
 
 ---
 
-## 3. Low-Latency Binary WebSocket Protocol
+## 3. Low-Latency Binary Protocol (Dual TCP/UDP)
 
-Sending text-based JSON over WebSockets introduces unnecessary overhead and parsing latency. All 3 platforms will implement the following ultra-fast binary payload for input syncing:
+Sending text-based JSON over WebSockets introduces unnecessary overhead and parsing latency. All 3 platforms will implement the following ultra-fast binary payload for input syncing, utilizing a dual TCP/UDP architecture (UDP for ultra-fast local LAN inputs, TCP WebSocket for WAN fallback):
 
 ### Packet Structure (3-5 Bytes per payload):
 *   **Byte 0: Player Index**
@@ -74,7 +74,7 @@ Sending text-based JSON over WebSockets introduces unnecessary overhead and pars
 
 ---
 
-## 5. Security & Pairing (Future Consideration)
+## 5. Security & Pairing
 To prevent unauthorized users on a public Wi-Fi network from hijacking the TV or Desktop console:
 *   Add a 4-digit PIN challenge in the WebSocket handshake.
 *   The Host displays a 4-digit PIN on the screen.
