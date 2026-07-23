@@ -174,4 +174,4 @@ Connecting players via Virtual Gamepad Controller Android/iOS application using 
 
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the GNU Lesser General Public License v2.1. See `LICENSE` for more information.

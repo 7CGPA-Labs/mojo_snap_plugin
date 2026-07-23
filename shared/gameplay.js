@@ -209,19 +209,22 @@ function bindEmscriptenFS(Module) {
     Module.FS.mount(BFS, { root: '/home' }, '/home');
 }
 
-function writeConfig() {
+function writeConfig(options) {
     const BrowserFS = window.BrowserFS;
     const fs = BrowserFS.BFSRequire('fs');
     const BufferClass = BrowserFS.BFSRequire('buffer').Buffer;
+    
+    const audioLatency = options?.audioLatency || "128";
+    const videoVsync = options?.videoVsync || "false";
     
     const cfgContent = `
 savefile_directory = "/home/web_user/retroarch/userdata/saves"
 savestate_directory = "/home/web_user/retroarch/userdata/states"
 core_options_path = "/home/web_user/retroarch/userdata/retroarch-core-options.cfg"
-video_vsync = "false"
+video_vsync = "${videoVsync}"
 video_threaded = "true"
 audio_enable = "true"
-audio_latency = "128"
+audio_latency = "${audioLatency}"
 menu_driver = "rgui"
 video_font_enable = "false"
 video_smooth = "false"
@@ -285,7 +288,7 @@ async function loadROM(game) {
         const ext = game.path.split('.').pop().split('?')[0].toLowerCase() || 'rom';
         const filename = game.filename || `game.${ext}`;
         const romPath = writeROM(filename, buffer);
-        writeConfig();
+        writeConfig(game.options || {});
 
         const fs = BrowserFS.BFSRequire('fs');
         const BufferClass = BrowserFS.BFSRequire('buffer').Buffer;

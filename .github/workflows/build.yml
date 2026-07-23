@@ -32,6 +32,19 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore src/MojoSnapPlugin.csproj
 
+      - name: Run Unit Tests
+        run: dotnet test tests/MojoSnapPlugin.Tests.csproj -c Release
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install JS dependencies and run ESLint
+        run: |
+          npm install
+          npm run lint
+
       - name: Build plugin assembly
         run: dotnet build src/MojoSnapPlugin.csproj -c Release -o dist/
 
